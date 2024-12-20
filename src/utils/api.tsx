@@ -7,7 +7,6 @@ interface User {
 
 interface Repo {
   stargazers_count: number;
-  // message?: string;
 }
 
 interface Repos {
@@ -55,17 +54,6 @@ export async function getRepos<T extends Repo>(username: string) {
     const repos: Promise<T[]> = await response.json();
 
     return repos;
-    // const response = await fetch(
-    //   `https://api.github.com/users/${username}/repos?sort=created&direction=desc&per_page=30`
-    // );
-
-    // const repos: Promise<T> = await response.json();
-
-    // if (response.ok === true) {
-    //   return repos;
-    // }
-
-    // throw new Error(getErrorMsg(repos.message, username));
   } catch (error) {
     if (error instanceof Error) {
       console.error(`We have an error: ${error.message}`);
