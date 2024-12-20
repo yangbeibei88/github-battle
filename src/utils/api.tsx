@@ -1,4 +1,4 @@
-interface Profile {
+interface User {
   login: string;
   avatar_url: string;
   url: string;
@@ -10,20 +10,27 @@ interface Repo {
   // message?: string;
 }
 
-export async function getProfile<T extends Profile>(username: string) {
+interface Repos {
+  items: Repo[];
+}
+
+export async function getUser<T extends User>(username: string) {
   try {
     const response = await fetch(`https://api.github.com/users/${username}`);
 
-    const profile: Promise<T> = await response.json();
+    if (!response.ok) {
+      throw new Error(
+        `Error fetching user for ${username} - ${response.status}`
+      );
+    }
+    const user: Promise<T> = await response.json();
     // {
     //   "message": "Not Found",
     //   "documentation_url": "https://docs.github.com/rest",
     //   "status": "404"
     //   }
-    if (!response.ok) {
-      throw new Error(`Error fetching profile for ${username}`);
-    }
-    return profile;
+
+    return user;
 
     // https://docs.github.com/en/rest/users/users?apiVersion=2022-11-28#get-a-user-using-their-id
   } catch (error) {
@@ -40,11 +47,12 @@ export async function getRepos<T extends Repo>(username: string) {
       `https://api.github.com/users/${username}/repos?sort=created&direction=desc&per_page=30`
     );
 
-    const repos: Promise<T[]> = await response.json();
-
     if (!response.ok) {
-      throw new Error(`Error fetching repos for ${username}`);
+      throw new Error(
+        `Error fetching repos for ${username} - ${response.status}`
+      );
     }
+    const repos: Promise<T[]> = await response.json();
 
     return repos;
     // const response = await fetch(
@@ -77,13 +85,13 @@ function calculateScore(followers: number, repos: Repo[]) {
 
 async function getPlayerData(player: string) {
   try {
-    const [profile, repos] = await Promise.all([
-      getProfile(player),
+    const [user, repos] = await Promise.all([
+      getUser(player),
       getRepos(player),
     ]);
 
-    if (profile && repos) {
-      return { profile, score: calculateScore(profile.followers, repos) };
+    if (user && repos) {
+      return { user, score: calculateScore(user.followers, repos) };
     }
   } catch (error) {
     if (error instanceof Error) {
@@ -111,20 +119,23 @@ export async function battle(players: [string, string]) {
   }
 }
 
-export async function fetchPopularRepos(language: string) {
+export async function fetchPopularRepos<T extends Repos>(language: string) {
   const endpoint = window.encodeURI(
     `https://api.github.com/search/repositories?q=stars:>1+language:${language}&sort=stars&order=desc&type=Repositories`
   );
   try {
     const response = await fetch(endpoint);
-    const repos = await response.json();
-    if (response.ok === true && repos.items) {
-      return repos.items;
+
+    if (!response.ok) {
+      throw new Error(`Fetching error occurs - ${response.status}`);
     }
-    throw new Error(repos.message);
+    const repos: Promise<Repos> = await response.json();
+
+    return (await repos).items;
   } catch (error) {
     if (error instanceof Error) {
-      return { error };
+      console.error(error);
+      throw new Error(error.message);
     }
   }
 }
