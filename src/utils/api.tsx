@@ -1,88 +1,130 @@
-export async function getProfile(username: string) {
+interface Profile {
+  login: string;
+  avatar_url: string;
+  url: string;
+  followers: number;
+}
+
+interface Repo {
+  stargazers_count: number;
+  // message?: string;
+}
+
+export async function getProfile<T extends Profile>(username: string) {
   try {
     const response = await fetch(`https://api.github.com/users/${username}`);
 
-    const profile = await response.json();
+    const profile: Promise<T> = await response.json();
     // {
     //   "message": "Not Found",
     //   "documentation_url": "https://docs.github.com/rest",
     //   "status": "404"
     //   }
-    if (response.ok === true) {
-      return profile;
+    if (!response.ok) {
+      throw new Error(`Error fetching profile for ${username}`);
     }
+    return profile;
 
-    // TODO: CREATE USER TYPE/INTERFACE
     // https://docs.github.com/en/rest/users/users?apiVersion=2022-11-28#get-a-user-using-their-id
-
-    throw new Error(getErrorMsg(profile.message, username));
   } catch (error) {
     if (error instanceof Error) {
-      return {
-        error,
-      };
+      console.error(`We have an error: ${error.message}`);
+      throw new Error(error.message);
     }
   }
 }
 
-export async function getRepos(username: string) {
+export async function getRepos<T extends Repo>(username: string) {
   try {
     const response = await fetch(
       `https://api.github.com/users/${username}/repos?sort=created&direction=desc&per_page=30`
     );
 
-    const repos = await response.json();
+    const repos: Promise<T[]> = await response.json();
 
-    if (response.ok === true) {
-      return repos;
+    if (!response.ok) {
+      throw new Error(`Error fetching repos for ${username}`);
     }
 
-    throw new Error(getErrorMsg(repos.message, username));
+    return repos;
+    // const response = await fetch(
+    //   `https://api.github.com/users/${username}/repos?sort=created&direction=desc&per_page=30`
+    // );
+
+    // const repos: Promise<T> = await response.json();
+
+    // if (response.ok === true) {
+    //   return repos;
+    // }
+
+    // throw new Error(getErrorMsg(repos.message, username));
   } catch (error) {
     if (error instanceof Error) {
-      return {
-        error,
-      };
+      console.error(`We have an error: ${error.message}`);
+      throw new Error(error.message);
     }
   }
 }
 
-function getStartCount(repos: Record<string, any>[]) {
+// sum of all repos' stargazers_count
+function getStarCount(repos: Repo[]) {
   return repos.reduce((acc, cur) => acc + cur.stargazers_count, 0);
 }
 
-function calculateScore(followers: number, repos: Record<string, any>[]) {
-  return followers * 3 + getStartCount(repos);
+function calculateScore(followers: number, repos: Repo[]) {
+  return followers * 3 + getStarCount(repos);
 }
 
-function getPlayerData(player: string) {
+async function getPlayerData(player: string) {
   try {
-    return Promise.all([getProfile(player), getRepos(player)]).then(
-      ([profile, repos]) => ({
-        profile,
-        score: calculateScore(profile.followers, repos),
-      })
-    );
+    const [profile, repos] = await Promise.all([
+      getProfile(player),
+      getRepos(player),
+    ]);
+
+    if (profile && repos) {
+      return { profile, score: calculateScore(profile.followers, repos) };
+    }
   } catch (error) {
     if (error instanceof Error) {
-      return {
-        error,
-      };
+      console.error(error);
+      throw new Error(error.message);
     }
   }
 }
 
-// function sortPlayer(players: string[]) {
-//   return players.sort((a: string, b: string) => {
-//     if (getPlayerData(a) && getPlayerData(b)) {
-//       return getPlayerData(b).score - getPlayerData(a).score;
-//     }
-//   });
-// }
+export async function battle(players: [string, string]) {
+  try {
+    const [playerA, playerB] = await Promise.all([
+      getPlayerData(players[0]),
+      getPlayerData(players[1]),
+    ]);
 
-function getErrorMsg(message: string, username: string) {
-  if (message === "Not Found") {
-    return `${username} doesn't exist.`;
+    if (playerA && playerB) {
+      return [playerA, playerB].sort((a, b) => b.score - a.score);
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error);
+      throw new Error(error.message);
+    }
   }
-  return message;
+}
+
+export async function fetchPopularRepos(language: string) {
+  const endpoint = window.encodeURI(
+    `https://api.github.com/search/repositories?q=stars:>1+language:${language}&sort=stars&order=desc&type=Repositories`
+  );
+  try {
+    const response = await fetch(endpoint);
+    const repos = await response.json();
+    if (response.ok === true && repos.items) {
+      return repos.items;
+    }
+    throw new Error(repos.message);
+  } catch (error) {
+    if (error instanceof Error) {
+      return { error };
+    }
+  }
 }
