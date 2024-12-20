@@ -129,7 +129,7 @@ export async function fetchPopularRepos<T extends Repos>(language: string) {
     if (!response.ok) {
       throw new Error(`Fetching error occurs - ${response.status}`);
     }
-    const repos: Promise<Repos> = await response.json();
+    const repos: Promise<T> = await response.json();
 
     return (await repos).items;
   } catch (error) {
