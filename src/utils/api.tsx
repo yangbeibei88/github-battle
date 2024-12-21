@@ -1,17 +1,4 @@
-interface User {
-  login: string;
-  avatar_url: string;
-  url: string;
-  followers: number;
-}
-
-interface Repo {
-  stargazers_count: number;
-}
-
-interface Repos {
-  items: Repo[];
-}
+import type { User, Repo, Repos } from "./types.tsx";
 
 export async function getUser<T extends User>(username: string) {
   try {
