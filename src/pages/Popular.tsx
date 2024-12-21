@@ -61,7 +61,7 @@ export function Popular() {
   const isLoading = () => !state[selectedLanguage] && state.error === null;
 
   return (
-    <>
+    <div className="container mx-auto">
       <LanguageNav
         selected={selectedLanguage}
         onUpdateLanguage={setSelectedLanguage}
@@ -70,6 +70,6 @@ export function Popular() {
 
       {state.error && <p className="text-center">{state.error}</p>}
       {state[selectedLanguage] && <ReposGrid repos={state[selectedLanguage]} />}
-    </>
+    </div>
   );
 }
