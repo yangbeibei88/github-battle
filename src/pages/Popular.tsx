@@ -3,6 +3,7 @@ import { ReposGrid } from "../components/ReposGrid.tsx";
 import { LanguageNav } from "../components/LanguageNav.tsx";
 import { Language, Repo } from "../utils/types.tsx";
 import { fetchPopularRepos } from "../utils/api.tsx";
+import { Loading } from "../components/Loading.tsx";
 
 interface PopularState extends Partial<Record<Language, Repo[]>> {
   error: null | string;
@@ -65,7 +66,7 @@ export function Popular() {
         selected={selectedLanguage}
         onUpdateLanguage={setSelectedLanguage}
       />
-      {/* {isLoading() && } */}
+      {isLoading() && <Loading text="Fetching Repos" />}
 
       {state.error && <p className="text-center">{state.error}</p>}
       {state[selectedLanguage] && <ReposGrid repos={state[selectedLanguage]} />}

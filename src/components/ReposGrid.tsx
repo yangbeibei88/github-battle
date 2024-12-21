@@ -9,7 +9,7 @@ import { Card } from "./Card.tsx";
 
 export function ReposGrid({ repos }: { repos: Repo[] }) {
   return (
-    <ul className="grid">
+    <ul className="flex flex-wrap justify-around">
       {repos.map((repo, index) => {
         const {
           id,
