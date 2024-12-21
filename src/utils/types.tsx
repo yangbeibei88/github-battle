@@ -1,4 +1,13 @@
 export type Theme = "light" | "dark" | "system";
+export type Language =
+  | "All"
+  | "TypeScript"
+  | "JavaScript"
+  | "Python"
+  | "Java"
+  | "Rust"
+  | "Ruby"
+  | "CSS";
 
 export interface User {
   login: string;

@@ -27,7 +27,7 @@ export async function getUser<T extends User>(username: string) {
   }
 }
 
-export async function getRepos<T extends Repo>(username: string) {
+export async function getReposByUser<T extends Repo>(username: string) {
   try {
     const response = await fetch(
       `https://api.github.com/users/${username}/repos?sort=created&direction=desc&per_page=30`
@@ -62,7 +62,7 @@ async function getPlayerData(player: string) {
   try {
     const [user, repos] = await Promise.all([
       getUser(player),
-      getRepos(player),
+      getReposByUser(player),
     ]);
 
     if (user && repos) {
