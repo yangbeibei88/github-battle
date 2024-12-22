@@ -19,13 +19,13 @@ type BattleActionType =
       payload: {
         winner: BattleResultUser;
         loser: BattleResultUser;
-        error: null;
-        loading: false;
+        error?: null;
+        loading?: false;
       };
     }
   | {
       type: "error";
-      payload: { error: Error; loading: false };
+      payload: { error: Error; loading?: false };
     };
 
 function battleReducer(state: BattleState, action: BattleActionType) {
@@ -52,7 +52,7 @@ function battleReducer(state: BattleState, action: BattleActionType) {
   }
 }
 
-export function Results() {
+export default function Results() {
   const searchParams = new URLSearchParams(window.location.search);
 
   const playerOne = searchParams.get("playerOne") as string;
@@ -74,15 +74,11 @@ export function Results() {
             payload: {
               winner: players[0],
               loser: players[1],
-              error: null,
-              loading: false,
             },
           });
         }
       })
-      .catch((error) =>
-        dispatch({ type: "error", payload: { error, loading: false } })
-      );
+      .catch((error) => dispatch({ type: "error", payload: { error } }));
   }, [playerOne, playerTwo]);
 
   const { winner, loser, error, loading } = state;

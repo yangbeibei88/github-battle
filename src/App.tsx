@@ -1,12 +1,14 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router";
 import "./App.css";
 import { Theme } from "./utils/types.tsx";
 import { ThemeContext } from "./contexts/theme.tsx";
 import { Nav } from "./components/Nav.tsx";
-import { Popular } from "./pages/Popular.tsx";
-import { Battle } from "./pages/Battle.tsx";
-import { Results } from "./pages/Results.tsx";
+import { Loading } from "./components/Loading.tsx";
+
+const Popular = React.lazy(() => import("./pages/Popular.tsx"));
+const Battle = React.lazy(() => import("./pages/Battle.tsx"));
+const Results = React.lazy(() => import("./pages/Results.tsx"));
 
 function App() {
   const [theme, setTheme] = useState<Theme>("light");
@@ -16,14 +18,14 @@ function App() {
     <BrowserRouter>
       <ThemeContext.Provider value={theme}>
         <div className={theme}>
-          <div className="">
-            <Nav toggleTheme={toggleTheme} />
+          <Nav toggleTheme={toggleTheme} />
+          <React.Suspense fallback={<Loading />}>
             <Routes>
               <Route path="/" Component={Popular} />
               <Route path="/battle" Component={Battle} />
               <Route path="/battle/results" Component={Results} />
             </Routes>
-          </div>
+          </React.Suspense>
         </div>
       </ThemeContext.Provider>
     </BrowserRouter>

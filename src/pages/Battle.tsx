@@ -4,7 +4,7 @@ import { PlayerInput } from "../components/PlayerInput.tsx";
 import { PlayerPreview } from "../components/PlayerPreview.tsx";
 import { Link } from "react-router";
 
-export function Battle() {
+export default function Battle() {
   const [playerOne, setPlayerOne] = useState<string | null>(null);
   const [playerTwo, setPlayerTwo] = useState<string | null>(null);
 

@@ -38,7 +38,7 @@ function popularReducer(state: PopularState, action: PopularActionType) {
   }
 }
 
-export function Popular() {
+export default function Popular() {
   const [selectedLanguage, setSelectedLanguage] = useState<Language>("All");
   const [state, dispatch] = useReducer(popularReducer, { error: null });
 
