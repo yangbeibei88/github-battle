@@ -24,7 +24,6 @@ export function PlayerInput({ onSubmit, label }: PlayerInputProps) {
         type="text"
         id="username"
         placeholder="github username"
-        autoComplete="off"
         value={username}
         onChange={handleChange}
       />

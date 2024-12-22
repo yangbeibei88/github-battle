@@ -3,13 +3,21 @@ import { ThemeContext } from "../contexts/theme.tsx";
 
 type CardProps = {
   header: string;
+  subheader?: string;
   avatar: string;
   href: string;
   name: string;
   children: React.ReactNode;
 };
 
-export function Card({ header, avatar, href, name, children }: CardProps) {
+export function Card({
+  header,
+  subheader,
+  avatar,
+  href,
+  name,
+  children,
+}: CardProps) {
   const theme = useContext(ThemeContext);
   return (
     <div
@@ -17,7 +25,8 @@ export function Card({ header, avatar, href, name, children }: CardProps) {
         theme === "light" ? "bg-slate-300" : "bg-slate-700"
       } `}
     >
-      <h4 className="text-lg">{header}</h4>
+      <h3 className="text-lg">{header}</h3>
+      {subheader && <h4>{subheader}</h4>}
       <a href={href}>
         <img src={avatar} alt={name} />
       </a>

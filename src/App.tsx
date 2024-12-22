@@ -6,6 +6,7 @@ import { ThemeContext } from "./contexts/theme.tsx";
 import { Nav } from "./components/Nav.tsx";
 import { Popular } from "./pages/Popular.tsx";
 import { Battle } from "./pages/Battle.tsx";
+import { Results } from "./pages/Results.tsx";
 
 function App() {
   const [theme, setTheme] = useState<Theme>("light");
@@ -20,6 +21,7 @@ function App() {
             <Routes>
               <Route path="/" Component={Popular} />
               <Route path="/battle" Component={Battle} />
+              <Route path="/battle/results" Component={Results} />
             </Routes>
           </div>
         </div>

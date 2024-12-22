@@ -8,7 +8,7 @@ import {
 } from "react-icons/fa";
 import { User } from "../utils/types.tsx";
 
-export function ProfileItems(user: User) {
+export function ProfileItems({ user }: { user: User }) {
   return (
     <ul>
       <li>

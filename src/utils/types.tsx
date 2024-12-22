@@ -13,12 +13,17 @@ export interface User {
   login: string;
   name: string;
   avatar_url: string;
-  url: string;
+  html_url: string;
   followers: number;
   following: number;
   public_repos: number;
   location: string | null;
   company: string | null;
+}
+
+export interface BattleResultUser {
+  user: User;
+  score: number;
 }
 
 export interface Repo {
