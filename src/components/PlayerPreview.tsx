@@ -32,7 +32,7 @@ export function PlayerPreview({
           </a>
         </div>
         <button type="button" onClick={onReset}>
-          <FaTimesCircle color="text-sky-700" size={26} />
+          <FaTimesCircle className="text-sky-700" size={26} />
         </button>
       </div>
     </div>

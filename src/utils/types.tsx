@@ -11,9 +11,14 @@ export type Language =
 
 export interface User {
   login: string;
+  name: string;
   avatar_url: string;
   url: string;
   followers: number;
+  following: number;
+  public_repos: number;
+  location: string | null;
+  company: string | null;
 }
 
 export interface Repo {
