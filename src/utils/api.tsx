@@ -30,7 +30,7 @@ export async function getUser<T extends User>(username: string) {
 export async function getReposByUser<T extends Repo>(username: string) {
   try {
     const response = await fetch(
-      `https://api.github.com/users/${username}/repos?sort=created&direction=desc&per_page=30`
+      `https://api.github.com/users/${username}/repos?sort=created&direction=desc&per_page=100`
     );
 
     if (!response.ok) {

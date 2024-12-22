@@ -92,8 +92,8 @@ export default function Results() {
   }
 
   return (
-    <div className="container">
-      <div className="flex justify-center items-center">
+    <div className="container mx-auto">
+      <div className="flex justify-around items-center">
         {winner && loser && (
           <Card
             header={winner.score === loser.score ? "Tie" : "Winner"}
@@ -118,7 +118,11 @@ export default function Results() {
           </Card>
         )}
       </div>
-      <Link to={"/battle"}>Reset</Link>
+      <div className="flex items-center w-full mx-auto">
+        <Link to={"/battle"} className="btn mx-auto text-center">
+          Reset
+        </Link>
+      </div>
     </div>
   );
 }

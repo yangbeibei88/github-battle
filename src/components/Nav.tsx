@@ -8,7 +8,7 @@ export function Nav({ toggleTheme }: { toggleTheme: () => void }) {
   return (
     <nav className="sticky top-0 z-30 flex justify-between items-center px-2 py-3">
       <div className="container mx-auto flex justify-between items-center">
-        <ul className="flex list-none">
+        <ul className="flex list-none gap-2">
           <li>
             <NavLink
               to="/"

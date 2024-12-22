@@ -18,18 +18,20 @@ export function PlayerInput({ onSubmit, label }: PlayerInputProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="flex flex-col w-full m-5">
       <label htmlFor="username">{label}</label>
-      <input
-        type="text"
-        id="username"
-        placeholder="github username"
-        value={username}
-        onChange={handleChange}
-      />
-      <button type="submit" disabled={!username}>
-        Submit
-      </button>
+      <div className="flex justify-center items-baseline space-x-2">
+        <input
+          type="text"
+          id="username"
+          placeholder="github username"
+          value={username}
+          onChange={handleChange}
+        />
+        <button type="submit" disabled={!username} className="btn">
+          Submit
+        </button>
+      </div>
     </form>
   );
 }

@@ -20,9 +20,9 @@ export default function Battle() {
     <div className="">
       <Instructions />
 
-      <div className="container">
-        <h1>Players</h1>
-        <div className="flex justify-between items-center">
+      <div className="container mx-auto">
+        <h1 className="text-center">Players</h1>
+        <div className="flex flex-flex-wrap justify-between items-center space-x-10">
           {playerOne === null ? (
             <PlayerInput
               label="Player One"
@@ -37,28 +37,31 @@ export default function Battle() {
           )}
           {playerTwo === null ? (
             <PlayerInput
-              label="Player One"
+              label="Player Two"
               onSubmit={(player) => handleSubmit("playerTwo", player)}
             />
           ) : (
             <PlayerPreview
-              label="Player One"
+              label="Player Two"
               username={playerTwo}
               onReset={() => handleReset("playerTwo")}
             />
           )}
         </div>
 
-        {playerOne && playerTwo && (
-          <Link
-            to={{
-              pathname: "/battle/results",
-              search: `?playerOne=${playerOne}&playerTwo=${playerTwo}`,
-            }}
-          >
-            Battle
-          </Link>
-        )}
+        <div className="flex items-center w-full mx-auto">
+          {playerOne && playerTwo && (
+            <Link
+              to={{
+                pathname: "/battle/results",
+                search: `?playerOne=${playerOne}&playerTwo=${playerTwo}`,
+              }}
+              className="btn mx-auto text-center"
+            >
+              Battle
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -19,7 +19,7 @@ export function LanguageNav({
   ];
 
   return (
-    <ul className="flex justify-center items-center">
+    <ul className="flex justify-center items-center space-x-4 font-semibold py-3 text-xl">
       {languages.map((language) => (
         <li key={language}>
           <button

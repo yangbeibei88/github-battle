@@ -21,7 +21,7 @@ export function Card({
   const theme = useContext(ThemeContext);
   return (
     <div
-      className={`my-3 p-4 w-60 rounded ${
+      className={`my-3 p-4 w-60 rounded h-full ${
         theme === "light" ? "bg-slate-300" : "bg-slate-700"
       } `}
     >

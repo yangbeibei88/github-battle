@@ -2,11 +2,76 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html {
+    font-family: system-ui, sans-serif;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 700;
+  }
+
+  h1 {
+    @apply text-3xl;
+  }
+  h2 {
+    @apply text-2xl;
+  }
+  h3 {
+    @apply text-xl;
+  }
+  h4 {
+    @apply text-lg;
+  }
+  h5 {
+    @apply text-base;
+  }
+  h6 {
+    @apply text-base;
+  }
+  p,
+  /* span {
+    @apply text-sm;
+  } */
+  p {
+    @apply my-2;
+  }
+
+  [type="text"],
+  [type="email"],
+  [type="url"],
+  [type="password"],
+  [type="number"],
+  [type="date"],
+  [type="datetime-local"],
+  [type="month"],
+  [type="search"],
+  [type="tel"],
+  [type="time"],
+  [type="week"],
+  [multiple],
+  textarea,
+  select {
+    @apply w-full rounded-lg border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 disabled:bg-slate-200 disabled:text-gray-700;
+  }
+  [type="checkbox"],
+  [type="radio"] {
+    @apply rounded border-gray-300 text-sky-800 focus:ring-sky-800;
+  }
+}
+
 @layer components {
   .dark {
     @apply dark:text-white dark:bg-slate-800 min-h-full;
   }
   .nav-link {
     @apply text-lg font-bold no-underline;
+  }
+  .btn {
+    @apply text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800;
   }
 }
